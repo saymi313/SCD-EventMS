@@ -4,16 +4,16 @@ const store = require('../data/store');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = 'usairamsaeed';
-
+//this fiile is created for SCD theory task
 describe('Events API', () => {
   let token;
   
   beforeEach(() => {
-    // Clear the store
+  
     store.events = [];
     store.users = [];
     
-    // Create a test user and generate token
+   
     const testUser = { id: 1, username: 'testuser' };
     store.users.push(testUser);
     token = jwt.sign({ userId: testUser.id }, JWT_SECRET);
