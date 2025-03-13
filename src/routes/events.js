@@ -9,15 +9,15 @@ const router = express.Router();
 router.post('/', (req, res) => {
   const { name, description, date, time, category, reminder } = req.body;
   const userId = req.user.userId;
-  
+
   const eventDate = parseISO(`${date}T${time}`);
-  
+
   if (!isFuture(eventDate)) {
     return res.status(400).json({ message: 'Event date must be in the future' });
   }
 
   if (!store.categories.includes(category)) {
-    return res.status(400).json({ message: 'Invalid category' });
+    return res.status(400).json({ error: 'Invalid category. Choose from Meetings, Birthdays, or Conferences.' });
   }
 
   const event = {
@@ -110,11 +110,11 @@ router.delete('/:id', (req, res) => {
   );
 
   if (eventIndex === -1) {
-    return res.status(404).json({ message: 'Event not found' });
+    return res.status(404).json({ error: 'Event not found. Please check the event ID.' });
   }
 
-  store.events.splice(eventIndex, 1);
-  res.status(204).send();
+  const deletedEvent = store.events.splice(eventIndex, 1)[0];
+  res.status(200).json({ message: `Event "${deletedEvent.name}" has been deleted.` });
 });
 
 module.exports = router;
